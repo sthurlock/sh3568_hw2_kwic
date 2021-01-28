@@ -4,7 +4,7 @@ import java.io.IOException;
 public class Output {
     public void writeToOutput(LineStorage lineStorage, String outputFilename) throws IOException {
         String[] lines = lineStorage.lines();
-        if (outputFilename == null || outputFilename == "null") {
+        if (outputFilename == null || outputFilename.equals("null")) {
             // write to console
             for (int i = 0; i < lines.length; i++) {
                 System.out.println(lines[i]);

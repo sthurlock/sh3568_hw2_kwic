@@ -19,7 +19,7 @@ public class Input {
     // read input from console or filename
 
     public void readInput(String inputFilename, LineStorage lineStorage) throws IOException {
-        if (inputFilename == null || inputFilename == "null") {
+        if (inputFilename == null || inputFilename.equals("null")) {
             //lineStorage.addLinesFromList(readFromConsole());
             lineStorage.addLines(readFromConsole());
         } else {
