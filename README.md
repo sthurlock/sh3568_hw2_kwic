@@ -1,4 +1,4 @@
-# Hurlock_HW1_KWIC for SE-575
+# Hurlock_HW1_KWIC for SE-575 
 
 # Purpose
 This program implements a Key Word in Context (KWIC) generator that takes a list of text strings from a file or console 
@@ -17,8 +17,11 @@ The program expects 2 arguments as input:
            - if this argument is null or "null", the program will write the output to the console.
                     
 # Running the code
-Use IntelliJ to open the directory that was created.  
-You can run the testcase testMasterControlWithFileInputAndOutput to run the test with the input and expected output provided in the home work.
+Use IntelliJ to open the directory that was created.  Then in the terminal, run "mvn clean install" to build the project.
+
+You can run the testcase **testMasterControlWithFileInputAndOutput** to run the test with the input and expected output provided in the home work.
+
+The input file is test/resources/input.txt and the expected output is in test/resources/expected_output.txt
 
 
 Another option is set the input parameters by right clicking on src/main/java/MasterControl, selecting More Run/Debug --> Modify Run Config and entering:
@@ -34,5 +37,4 @@ To enter the input file from the console:
 # Comments
 The design of this program is based on the proposed modular solution presented in the paper *On the Criteria To Be Used in Decomposing Systems into Modules* by D. L. Parnas.  I created a class for each of the modules that he described.  I decided to instantiate each object in the MastControl main method.  I created 3 LineStorage objects to hold the results of the input, circular shift, and alphabetizer functions.  I ended up not having state in any of the funtions except for LineStorage which creates internal arrays once the number of lines needed is known.  I don't think this is a great design.  I think I would have a single class that has the linestorage arrays as properites and have a method for each function that operates on that state.  
 
-I also wrote it like this to make it easy to test.  I wrote unit tests that created the input LineStorage object and an empty Linestorage object for the result to be verified.  I attempted to write a test to mock the console input, but was not able to get that fully working with mockito so that is commented out for now.  This was my first time working with java unit tests.  The tests are in src/test/java/Test_MasterControl.java
-
+I also wrote it like this to make it easy to test.  I wrote unit tests that created the input LineStorage object and an empty Linestorage object for the result to be verified.  I attempted to write a test to mock the console input, but was not able to get that fully working with mockito so that is commented out for now.  The test that reads input from the console and outputs to a file is also commented out so the tests run without needed input to be entered.  This was my first time working with java unit tests.  The tests are in src/test/java/Test_MasterControl.java
