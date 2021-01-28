@@ -19,14 +19,15 @@ public class Input {
     // read input from console or filename
 
     public void readInput(String inputFilename, LineStorage lineStorage) throws IOException {
-        if (inputFilename == null) {
-            lineStorage.addLinesFromList(readFromConsole());
+        if (inputFilename == null || inputFilename == "null") {
+            //lineStorage.addLinesFromList(readFromConsole());
+            lineStorage.addLines(readFromConsole());
         } else {
             Path path1 = Paths.get("src/test/resources/input.txt");
             List<String> inputLines = Files.readAllLines(path1);
             String[] inputNoPunctuation = new String[inputLines.size()];
             for (int i = 0; i < inputLines.size(); i++) {
-                System.out.println(inputLines.get(i));
+                //System.out.println(inputLines.get(i));
                 inputNoPunctuation[i] = (inputLines.get(i)).replaceAll("[,.?]", "");
             }
             lineStorage.addLines(inputNoPunctuation);
@@ -34,31 +35,29 @@ public class Input {
     }
 
 
-    public List<String> readFromConsole() throws IOException
+    //public List<String> readFromConsole() throws IOException
+    public String[] readFromConsole() throws IOException
     {
         int inputType = 1;
-        List<String> consoleInput = new ArrayList<>();
-        if (inputType==1) {
-            try (InputStreamReader in = new InputStreamReader(System.in);
-                 BufferedReader buffer = new BufferedReader(in)) {
-                String line;
-                while ((line = buffer.readLine()) == null) {
-                    System.out.println(line);
-                    consoleInput.add(line);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            List<String> tokens = new ArrayList<>();
-            Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNext()) {
-                tokens.add(scanner.next());
-            }
-            scanner.close();
-
+        //List<String> consoleInput = new ArrayList<>();
+        String[] consoleInput = null;
+        try (InputStreamReader in = new InputStreamReader(System.in);
+             BufferedReader buffer = new BufferedReader(in))
+        {
+            String line;
+            // read one line that has all lines separated by pipe delimiters, then split
+            line = buffer.readLine();
+            line = line.replaceAll("[,.?]", "");
+            consoleInput = line.split("[|]");
+            /*
+            while ((line = buffer.readLine()) == null) {
+                System.out.println(line);
+                consoleInput.add(line);
+            } */
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return consoleInput;
     }
 }

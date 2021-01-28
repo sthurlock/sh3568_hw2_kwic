@@ -1,4 +1,7 @@
 import org.junit.Test;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
+
 
 import javax.sound.sampled.Line;
 import java.io.File;
@@ -7,6 +10,12 @@ import java.nio.file.*;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+//import static org.mockito.Mockito.verify;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 
 
 public class Test_MasterControl {
@@ -31,13 +40,13 @@ public class Test_MasterControl {
             assertEquals(inputWithNoPunctuation, output[i] );
         }
     }
-
+/*
     @Test
     public void testInputfromConsole() throws IOException {
         Input inputHandler = new Input();
         inputHandler.readFromConsole();
     }
-
+*/
     @Test
     public void testCircularShift() throws IOException {
         LineStorage lineStorage = new LineStorage();
@@ -106,7 +115,7 @@ public class Test_MasterControl {
 
     }
     @Test
-    public void testMasterControlWithFileInputandOutput() throws IOException {
+    public void testMasterControlWithFileInputAndOutput() throws IOException {
         String expected_value = "Hello, world!";
 
         String infile = "src/test/resources/input.txt";
@@ -130,4 +139,62 @@ public class Test_MasterControl {
             assertEquals(expectedlines.get(i), actualLines.get(i) );
         }
     }
+
+    /*
+    BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
+    Mockito.when(bufferedReader.readLine()).thenReturn("line1", "line2", "line3");
+     */
+    //@Test
+    public void testMasterControlWithConsoleInputAndFileOutput() throws IOException {
+        String infile = null;
+        String outfile = "src/test/resources/test_output_1.txt";
+
+        MasterControl masterControl = new MasterControl();
+        String[] args = new String[2];
+        args[0] = infile;
+        args[1] = outfile;
+        masterControl.main(args);
+
+        // get expected output and compare
+        Path path1 = Paths.get("src/test/resources/expected_output.txt");
+        List<String> expectedlines = Files.readAllLines(path1);
+        Path path = Paths.get(outfile);
+        List<String> actualLines = Files.readAllLines(path);
+
+        for (int i = 0; i < expectedlines.size(); i++) {
+            // System.out.println(expectedlines.get(i));
+            // System.out.println(actualLines.get(i));
+            assertEquals(expectedlines.get(i), actualLines.get(i) );
+        }
+    }
+/*
+    @Test
+    public void testMasterControlWithMockConsoleInputAndFileOutput() throws IOException {
+        String infile = null;
+        String outfile = "src/test/resources/test_output_1.txt";
+
+        BufferedReader mock = Mockito.mock(BufferedReader.class);
+        Mockito.when(mock.readLine()).thenReturn("1");
+
+        MasterControl masterControl = new MasterControl();
+        String[] args = new String[2];
+        args[0] = infile;
+        args[1] = outfile;
+        masterControl.main(args);
+        System.out.println(verify(mock).readLine());
+
+        // get expected output and compare
+        Path path1 = Paths.get("src/test/resources/expected_output.txt");
+        List<String> expectedlines = Files.readAllLines(path1);
+        Path path = Paths.get(outfile);
+        List<String> actualLines = Files.readAllLines(path);
+
+        for (int i = 0; i < expectedlines.size(); i++) {
+            System.out.println(expectedlines.get(i));
+            System.out.println(actualLines.get(i));
+            assertEquals(expectedlines.get(i), actualLines.get(i) );
+        }
+    }
+*/
+
 }
