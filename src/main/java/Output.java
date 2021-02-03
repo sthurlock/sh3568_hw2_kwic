@@ -1,9 +1,13 @@
+package se575.kwic;
+
+import se575.kwic.LineStorage;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Output {
     public void writeToOutput(LineStorage lineStorage, String outputFilename) throws IOException {
-        String[] lines = lineStorage.lines();
+        String[] lines = lineStorage.getSortedLines();
         if (outputFilename == null || outputFilename.equals("null")) {
             // write to console
             for (int i = 0; i < lines.length; i++) {
@@ -19,3 +23,4 @@ public class Output {
         }
     }
 }
+
