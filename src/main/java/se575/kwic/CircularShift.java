@@ -1,9 +1,13 @@
+package se575.kwic;
+
 import java.util.Arrays;
 
 public class CircularShift {
-    public void performShifts(LineStorage inputLineStorage, LineStorage circularShiftLineStorage) {
-        int nLines = inputLineStorage.numberOfLines();
-        String[] linesArray = inputLineStorage.lines();
+
+    public String[] performShifts(String[] linesArray) {
+        ////int nLines = inputLineStorage.numberOfLines();
+        ////String[] linesArray = inputLineStorage.getInputLines();
+        int nLines = linesArray.length;
         // create an array to hold the arrays of the shifted lines
         String[][] allShiftedLines = new String[nLines][];
         int totalWords = 0;
@@ -43,6 +47,7 @@ public class CircularShift {
                 fullListIndex++;
             }
         }
-        circularShiftLineStorage.addLines(fullList);
+        //circularShiftLineStorage.addLines(fullList);
+        return fullList;
     }
 }

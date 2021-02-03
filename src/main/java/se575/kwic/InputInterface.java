@@ -1,3 +1,5 @@
+package se575.kwic;
+
 import java.io.IOException;
 
 public interface InputInterface {

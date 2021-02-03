@@ -1,3 +1,5 @@
+package se575.kwic;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,9 +12,7 @@ public class FileInput implements InputInterface {
     //public List<String> readFromConsole() throws IOException
     public String[] readInput(String filename) throws IOException
     {
-
-        //List<String> consoleInput = new ArrayList<>();
-        Path path1 = Paths.get("src/test/resources/input.txt");
+        Path path1 = Paths.get(filename);
         List<String> inputLines = Files.readAllLines(path1);
         String[] inputNoPunctuation = new String[inputLines.size()];
         for (int i = 0; i < inputLines.size(); i++) {
