@@ -1,11 +1,11 @@
-# Hurlock_HW1_KWIC for SE-575 
+# sh3568_hw2_kwic - Steve Hurlock for SE-575 
 
 # Purpose
 This program implements a Key Word in Context (KWIC) generator that takes a list of text strings from a file or console 
 and creates a alphabetically sorted list with a line for each word in the input so the user can quickly find any keyword in the file.
 
 # Download from github
-git clone https://github.com/sthurlock/Hurlock_HW1_KWIC.git
+git clone https://github.com/sthurlock/sh3568_hw2_kwic.git
 
 # Input Options
 The program expects 2 arguments as input:  
