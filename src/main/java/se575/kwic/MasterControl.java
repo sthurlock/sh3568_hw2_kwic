@@ -1,6 +1,6 @@
-import javax.sound.sampled.Line;
+import se575.kwic.CircularShift;
+
 import java.io.IOException;
-import java.util.AbstractList;
 
 public class MasterControl {
 

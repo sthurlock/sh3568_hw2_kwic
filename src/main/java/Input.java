@@ -1,22 +1,24 @@
-import javax.swing.*;
+package se575.kwic;
+
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class Input {
 
     // pass in LineStorage object & filename, null filename means read from console
     // read input from console or filename
+    LineStorage inputStorage;
+    //InputInterface
+
+/*    public void Input () {
+        inputStorage = new LineStorage();
+    }*/
 
     public void readInput(String inputFilename, LineStorage lineStorage) throws IOException {
         if (inputFilename == null || inputFilename.equals("null")) {
@@ -61,5 +63,7 @@ public class Input {
         return consoleInput;
     }
 }
+
+
 
 

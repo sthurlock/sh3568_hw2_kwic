@@ -1,10 +1,11 @@
+package se575.kwic;
+
 import org.junit.Test;
+import se575.kwic.*;
 //import org.mockito.Mock;
 //import org.mockito.Mockito;
 
 
-import javax.sound.sampled.Line;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
@@ -12,13 +13,18 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 //import static org.mockito.Mockito.verify;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
-
 
 public class Test_MasterControl {
+    @Test
+    public void testReadConfig() throws IOException {
+        LineStorage lineStorage = new LineStorage();
+        String file = "src/test/resources/input.txt";
+        lineStorage.configureOptions("configuration.properties");
+        int nLines = lineStorage.readInput(file);
+        Path path = Paths.get(file);
+        List<String> inputLines = Files.readAllLines(path);
+        assertEquals(inputLines.size(),nLines);
+     }
 
     @Test
     public void testInputWithFilename() throws IOException {
