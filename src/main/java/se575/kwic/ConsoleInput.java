@@ -19,11 +19,6 @@ class ConsoleInput implements InputInterface {
             line = buffer.readLine();
             line = line.replaceAll("[,.?]", "");
             consoleInput = line.split("[|]");
-            /*
-            while ((line = buffer.readLine()) == null) {
-                System.out.println(line);
-                consoleInput.add(line);
-            } */
             return consoleInput;
         } catch (Exception e) {
             e.printStackTrace();

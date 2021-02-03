@@ -13,4 +13,9 @@
       <module name="Hurlock_HW1_KWIC" target="10" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Hurlock_HW1_KWIC" options="" />
+    </option>
+  </component>
 </project>
