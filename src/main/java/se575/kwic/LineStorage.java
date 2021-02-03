@@ -22,6 +22,7 @@ public class LineStorage {
     String outputFilename;
     public InputInterface inputStrategy;
     public OutputInterface outputStrategy;
+    public AlphabetizerInterface alphabetizerStrategy;
 
     // make readInput() that uses inputSource.readInput()
 
@@ -52,9 +53,8 @@ public class LineStorage {
     public void createKWIC() {
         System.out.println("In: LineStorage.createKWIC");
         CircularShift shiftHandler = new CircularShift();
-        Alphabetizer alphabetizerHandler = new Alphabetizer();
         shiftedLines = shiftHandler.performShifts(inputLines);
-        sortedLines = alphabetizerHandler.sort(shiftedLines);
+        sortedLines = alphabetizerStrategy.sort(shiftedLines);
     }
 
 /*    public int addLines(String[] inputArray) {
@@ -102,6 +102,7 @@ public class LineStorage {
         // TODO: these need to have try/catch and default to known class name if class not found!
         inputStrategy = (InputInterface) objectLoader.loadObject(p.getProperty("input"));
         outputStrategy = (OutputInterface) objectLoader.loadObject(p.getProperty("output"));
+        alphabetizerStrategy = (AlphabetizerInterface) objectLoader.loadObject(p.getProperty("sort"));
 
     }
 }
