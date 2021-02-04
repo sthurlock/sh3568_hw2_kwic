@@ -212,7 +212,7 @@ public class Test_MasterControl {
 
 
     //@Test
-    public void testMasterControlConsoleInputConsoleOutput_caseInsensitve_vanilla() throws IOException {
+    public void testMasterControlConsole() throws IOException {
         // input expected on console: What is gooder than god,|more evil than the devil,|the rich need it,|the poor have it,|and if you eat it you will die?
         String infile = "src/test/resources/input.txt";
         String outfile = "src/test/resources/test_output_1.txt";
