@@ -8,10 +8,11 @@ import java.util.Arrays;
 
 public class CircularShift {
 
-    public String stopWords = "";
+    public String stopWords = "ERROR";
 
     public void setStopWords(String sw) {
         stopWords = sw;
+        System.out.println("stopWords = " + stopWords);
     }
 
     public String[] performShifts(String[] linesArray) {

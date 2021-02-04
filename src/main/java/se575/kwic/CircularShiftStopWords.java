@@ -26,7 +26,6 @@ public class CircularShiftStopWords extends CircularShiftDecorator {
                 //System.out.println(shiftedLines[i] + " -- " + stopWordsArray[j]);
                 String regex = "^" + stopWordsArray[j] + ".*$";  // need to match the whole damn line!
                 //System.out.println(regex);
-                //if (shiftedLines[i].matches("^" + stopWordsArray[j])) {
                 if (Pattern.matches(regex, shiftedLines[i]) == Boolean.TRUE) {
                     found = Boolean.TRUE;
                     //System.out.println("..Found");

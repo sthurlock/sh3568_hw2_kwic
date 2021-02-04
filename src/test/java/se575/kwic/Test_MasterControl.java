@@ -5,8 +5,8 @@ import se575.kwic.*;
 //import org.mockito.Mock;
 //import org.mockito.Mockito;
 
-
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
@@ -14,8 +14,24 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 //import static org.mockito.Mockito.verify;
 
-
 public class Test_MasterControl {
+
+    public void makePropertiesFiles(String fileName, String[] keyValuePairs) {
+        File outfile = new File(fileName);
+        outfile.delete();
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(fileName);
+            for (int i = 0; i < keyValuePairs.length; i++) {
+                // write each line to the file.
+                System.out.print("line: " + keyValuePairs[i] + "\n");
+                fw.write(keyValuePairs[i] + "\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void testReadConfigAndReadFileInput()  {
@@ -51,100 +67,7 @@ public class Test_MasterControl {
         lineStorage.readInput();
         assertEquals(lineStorage.getInputLines().length, 5);
     }
-/*    @Test
-    public void testInputWithFilename() throws IOException {
-        String expected_value = "test: testInput";
 
-        String file = "src/test/resources/input.txt";
-        Path path = Paths.get(file);
-        List<String> inputLines = Files.readAllLines(path);
-
-        LineStorage lineStorage = new LineStorage();
-        Input inputHandler = new Input();
-        inputHandler.readInput(file, lineStorage);
-        String[] output = lineStorage.lines();
-
-        for (int i = 0; i < inputLines.size(); i++) {
-            // remove punctuation from inputLines before comparing
-            String inputWithNoPunctuation = inputLines.get(i);
-            inputWithNoPunctuation = inputWithNoPunctuation.replaceAll("[,.?]", "");
-            assertEquals(inputWithNoPunctuation, output[i] );
-        }
-    }*/
-/*
-    @Test
-    public void testInputfromConsole() throws IOException {
-        Input inputHandler = new Input();
-        inputHandler.readFromConsole();
-    }
-*/
-    /*@Test
-    public void testCircularShift() throws IOException {
-        LineStorage lineStorage = new LineStorage();
-        String[] testInput = new String[2];
-        testInput[0] = "Here is the first line";  // 5 words
-        testInput[1] = "Second Line Here is"; // 4 words  --> total of 9 words
-        lineStorage.addLines(testInput);
-        CircularShift circularShifter = new CircularShift();
-        LineStorage outputStorage = new LineStorage();
-
-        circularShifter.performShifts(lineStorage, outputStorage);
-
-        assertEquals((outputStorage.lines()).length,9);  // one line per number of words
-        String[] outputStorageArray = outputStorage.lines();
-        *//*
-        for (int i = 0; i < outputStorageArray.length; i++) {
-            System.out.println(outputStorageArray[i]);
-        }
-        *//*
-        assertEquals( "is Second Line Here", outputStorageArray[8]);  // check last line
-
-    }*/
-    /*@Test
-    public void testAlphabetizer() throws IOException {
-        // create input
-        LineStorage lineStorage = new LineStorage();
-        LineStorage outputStorage = new LineStorage();
-        String[] testInput = new String[5];
-        testInput[0] = "Zoo B"; // this should be the last line in the output storage array
-        testInput[1] = "Too";
-        testInput[2] = "Flew";
-        testInput[3] = "Moo";
-        testInput[4] = "Zoo A";
-        lineStorage.addLines(testInput);
-
-        Alphabetizer alphabetizer = new Alphabetizer();
-        alphabetizer.sort(lineStorage, outputStorage);
-
-        assertEquals((outputStorage.lines()).length,5);
-        String[] outputStorageArray = outputStorage.lines();
-        *//*
-        for (int i = 0; i < outputStorageArray.length; i++) {
-            System.out.println(outputStorageArray[i]);
-        }
-        *//*
-        assertEquals( "Zoo B", outputStorageArray[4]);
-
-    }*/
-    /*@Test
-    public void testOutputToFile() throws IOException {
-        // create input
-        LineStorage lineStorage = new LineStorage();
-        String[] testInput = new String[2];
-        testInput[0] = "Here is the first line";
-        testInput[1] = "Second Line Here is";
-        lineStorage.addLines(testInput);
-
-        String outputFile = "src/test/resources/test_output.txt";
-        Output outputHandler = new Output();
-        outputHandler.writeToOutput(lineStorage, outputFile);
-
-        Path path = Paths.get(outputFile);
-        List<String> inputLines = Files.readAllLines(path);
-        assertEquals(inputLines.size(),2);
-        assertEquals(inputLines.get(1), testInput[1] );
-
-    }*/
     @Test
     public void testMasterControlWithFileInputAndOutput() throws IOException {
         String expected_value = "Hello, world!";
@@ -171,10 +94,7 @@ public class Test_MasterControl {
         }
     }
 
-    /*
-    BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
-    Mockito.when(bufferedReader.readLine()).thenReturn("line1", "line2", "line3");
-     */
+
     //@Test
     public void testMasterControlWithConsoleInputAndFileOutput() throws IOException {
         String infile = null;
@@ -198,46 +118,124 @@ public class Test_MasterControl {
             assertEquals(expectedlines.get(i), actualLines.get(i) );
         }
     }
-/*
-    @Test
-    public void testMasterControlWithMockConsoleInputAndFileOutput() throws IOException {
-        String infile = null;
-        String outfile = "src/test/resources/test_output_1.txt";
-
-        BufferedReader mock = Mockito.mock(BufferedReader.class);
-        Mockito.when(mock.readLine()).thenReturn("1");
-
+    public void runTest( String infile, String outfile, String props, String expectedOutput) throws IOException {
         MasterControl masterControl = new MasterControl();
-        String[] args = new String[2];
+        String[] args = new String[3];
         args[0] = infile;
         args[1] = outfile;
+        args[2] = props;
         masterControl.main(args);
-        System.out.println(verify(mock).readLine());
 
         // get expected output and compare
-        Path path1 = Paths.get("src/test/resources/expected_output.txt");
+        Path path1 = Paths.get(expectedOutput);
         List<String> expectedlines = Files.readAllLines(path1);
         Path path = Paths.get(outfile);
         List<String> actualLines = Files.readAllLines(path);
-
+        //assertEquals(expectedlines.size(), actualLines.size() );
         for (int i = 0; i < expectedlines.size(); i++) {
             System.out.println(expectedlines.get(i));
             System.out.println(actualLines.get(i));
             assertEquals(expectedlines.get(i), actualLines.get(i) );
         }
     }
-*/
-/*
     @Test
-    public void testClassLoader() throws NoSuchMethodException {
-        String className = "se575.kwic.SampleClassA";
-        String expected_output = "SampleClassA";
-        AClassLoader aClassLoader = new AClassLoader();
-        Class<?> newClass = aClassLoader.selectClass(className);
-        String output = ((SampleClassA) newClass).printName();
-        assertEquals(output, expected_output);
-    }*/
+    public void testMasterControlFileInputFileOutput_caseInsensitve_vanilla() throws IOException {
+        String infile = "src/test/resources/input.txt";
+        String outfile = "src/test/resources/test_output_1.txt";
+        String props = "test_vanilla.properties";
+        String propsPath = "src/test/resources/" + props;
+        String expectedOutput = "src/test/resources/expected_output.txt";
+        String[] keyValues = new String[] {
+                "input=se575.kwic.FileInput",
+                "output=se575.kwic.FileOutput",
+                "shift=se575.kwic.CircularShift",
+                "sort=se575.kwic.AlphabetizerCaseInsensitive"
+        };
+        //makePropertiesFiles(propsPath, keyValues);  // Use pre-written file instead of writing here
+        runTest( infile, outfile, props, expectedOutput);
+    }
+
+    @Test
+    public void testMasterControlFileInputFileOutput_caseSensitve() throws IOException {
+        String infile = "src/test/resources/input.txt";
+        String outfile = "src/test/resources/test_output_1.txt";
+        String props = "testMasterControlFileInputFileOutput_caseSensitve.properties";
+        String propsPath = "src/test/resources/" + props;
+        String expectedOutput = "src/test/resources/expected_output_caseSensitive.txt";
+        String[] keyValues = new String[]{
+                "input=se575.kwic.FileInput",
+                "output=se575.kwic.FileOutput",
+                "shift=se575.kwic.CircularShift",
+                "sort=se575.kwic.AlphabetizerCaseSensitive"
+        };
+        //makePropertiesFiles(propsPath, keyValues);
+        runTest(infile, outfile, props, expectedOutput);
+    }
+    @Test
+    public void testMasterControlFileInputFileOutput_caseSensitve_stopwords() throws IOException {
+        String infile = "src/test/resources/input.txt";
+        String outfile = "src/test/resources/test_output_2.txt";
+        String props = "testMasterControlFileInputFileOutput_caseSensitve_stopword.properties";
+        String propsPath = "src/test/resources/" + props;
+        String expectedOutput = "src/test/resources/expected_output_caseSensitive_noStopWords.txt";
+        String[] keyValues = new String[]{
+                "input=se575.kwic.FileInput",
+                "output=se575.kwic.FileOutput",
+                "shift=se575.kwic.CircularShift",
+                "sort=se575.kwic.AlphabetizerCaseSensitive",
+                "stopWords=and,is,the"
+        };
+        //makePropertiesFiles(propsPath, keyValues);
+        runTest(infile, outfile, props, expectedOutput);
+    }
+    @Test
+    public void testMasterControlFileInputFileOutput_caseSensitve_stopwords_linecountBefore() throws IOException {
+        String infile = "src/test/resources/input.txt";
+        String outfile = "src/test/resources/test_output_2.txt";
+        String props = "test_LineCountBefore.properties";
+        String propsPath = "src/test/resources/" + props;
+        String expectedOutput = "src/test/resources/expected_output_caseSensitive_noStopWords_linecountbefore.txt";
+        runTest(infile, outfile, props, expectedOutput);
+    }
+
+    @Test
+    public void testMasterControlFileInputFileOutput_caseSensitve_stopwords_linecountAfter() throws IOException {
+        String infile = "src/test/resources/input.txt";
+        String outfile = "src/test/resources/test_output_2.txt";
+        String props = "test_LineCountAfter.properties";
+        String propsPath = "src/test/resources/" + props;
+        String expectedOutput = "src/test/resources/expected_output_caseSensitive_noStopWords_linecountafter.txt";
+        runTest(infile, outfile, props, expectedOutput);
+    }
 
 
+
+
+    //@Test
+    public void testMasterControlConsoleInputConsoleOutput_caseInsensitve_vanilla() throws IOException {
+        // input expected on console: What is gooder than god,|more evil than the devil,|the rich need it,|the poor have it,|and if you eat it you will die?
+        String infile = "src/test/resources/input.txt";
+        String outfile = "src/test/resources/test_output_1.txt";
+        String props = "console_test.properties";
+        String propsPath = "src/test/resources/" + props;
+        String expectedOutput = "src/test/resources/expected_output.txt";
+        /*  String[] keyValues = new String[] {
+                "input=se575.kwic.ConsoleInput",
+                "output=se575.kwic.ConsoleOutput",
+                "shift=se575.kwic.CircularShift",
+                "sort=se575.kwic.AlphabetizerCaseInsensitive"
+        };
+        makePropertiesFiles(propsPath, keyValues);*/
+
+        MasterControl masterControl = new MasterControl();
+        String[] args = new String[3];
+        args[0] = infile;
+        args[1] = outfile;
+        args[2] = props;
+        masterControl.main(args);
+
+        // CHECK MANUALLY FOR NOW
+
+    }
 
 }
