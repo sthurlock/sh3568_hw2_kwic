@@ -1,20 +1,14 @@
 package se575.kwic;
 
-import se575.kwic.FileInput;
-import se575.kwic.InputInterface;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Properties;
-
-import static java.lang.Class.forName;
 
 public class LineStorage {
 
-    String[] storage;
+    //String[] storage;
     String[] inputLines;
     String[] shiftedLines;
     String[] sortedLines;
@@ -23,6 +17,7 @@ public class LineStorage {
     public InputInterface inputStrategy;
     public OutputInterface outputStrategy;
     public AlphabetizerInterface alphabetizerStrategy;
+    public CircularShift shiftStrategy;
 
     // make readInput() that uses inputSource.readInput()
 
@@ -40,21 +35,26 @@ public class LineStorage {
         System.out.println("In: LineStorage.readInput");
         try {
             inputLines = inputStrategy.readInput(inputFilename);
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+/*        try {
+            inputLines = inputStrategy.readInput(inputFilename);
+        } catch (IOException e) { e.printStackTrace(); }*/
         return inputLines.length;
     }
 
-    public void writeOutput() {
-        System.out.println("In: LineStorage.writeOutput");
-        try {
-            outputStrategy.writeOutput(sortedLines, outputFilename);
-        } catch (IOException e) { e.printStackTrace(); }
-    }
+
     public void createKWIC() {
         System.out.println("In: LineStorage.createKWIC");
         CircularShift shiftHandler = new CircularShift();
         shiftedLines = shiftHandler.performShifts(inputLines);
         sortedLines = alphabetizerStrategy.sort(shiftedLines);
+    }
+
+    public void writeOutput() {
+        System.out.println("In: LineStorage.writeOutput");
+        outputStrategy.writeOutput(sortedLines, outputFilename);
     }
 
 /*    public int addLines(String[] inputArray) {
@@ -83,9 +83,15 @@ public class LineStorage {
         return sortedLines;
     }
 
+    public void method () {
+        //ObjectLoader x = new ObjectLoader();
+
+    }
+
     public void configureOptions(String parameterFile) {
        // open parameterFile, read input value, select ConsoleInput or FileInput as InputSource
-        ObjectLoader objectLoader = new ObjectLoader();
+
+
         Properties properties = new Properties();
         URL url = ClassLoader.getSystemResource(parameterFile);
 
@@ -98,11 +104,30 @@ public class LineStorage {
 
         System.out.println("input = " + p.getProperty("input"));
         System.out.println("output = " + p.getProperty("output"));
+        System.out.println("output = " + p.getProperty("sort"));
         // Strategy Pattern - use input from properties file to select OUTPUT behavior
         // TODO: these need to have try/catch and default to known class name if class not found!
+        ObjectLoader objectLoader = new ObjectLoader();
         inputStrategy = (InputInterface) objectLoader.loadObject(p.getProperty("input"));
-        outputStrategy = (OutputInterface) objectLoader.loadObject(p.getProperty("output"));
         alphabetizerStrategy = (AlphabetizerInterface) objectLoader.loadObject(p.getProperty("sort"));
+
+        String header = p.getProperty("header");
+        String footer = p.getProperty("footer");
+        if (header == null && footer == null) {
+            outputStrategy = (OutputInterface) new FileOutput();
+        } else {
+            FileHeaderFooterOutput fileHeaderFooterOutput = new FileHeaderFooterOutput(new FileOutput());
+            fileHeaderFooterOutput.setHeader(header);
+            fileHeaderFooterOutput.setFooter(footer);
+            outputStrategy = (OutputInterface) fileHeaderFooterOutput;
+        }
+
+        // select CircularShift Strategy --> if stopwords exists, then use CircularShiftStopWords
+        shiftStrategy = new CircularShift();
+        if (p.getProperty("stopWords") != null) {
+            shiftStrategy.setStopWords(p.getProperty("stopWords"));
+            shiftStrategy = new CircularShiftStopWords(shiftStrategy);
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 package se575.kwic;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 class ConsoleInput implements InputInterface {
@@ -8,7 +9,7 @@ class ConsoleInput implements InputInterface {
 // pass in LineStorage object & filename, null filename means read from console
 // read input from console or filename
 
-    public String[] readInput(String filename) {
+    public String[] readInput(String filename) throws IOException {
 
         String[] consoleInput = null;
         try (InputStreamReader in = new InputStreamReader(System.in);

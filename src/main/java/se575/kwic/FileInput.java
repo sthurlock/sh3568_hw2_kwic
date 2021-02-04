@@ -14,11 +14,13 @@ public class FileInput implements InputInterface {
     {
         Path path1 = Paths.get(filename);
         List<String> inputLines = Files.readAllLines(path1);
+
         String[] inputNoPunctuation = new String[inputLines.size()];
         for (int i = 0; i < inputLines.size(); i++) {
             //System.out.println(inputLines.get(i));
             inputNoPunctuation[i] = (inputLines.get(i)).replaceAll("[,.?]", "");
         }
+
         return inputNoPunctuation;
     }
 }

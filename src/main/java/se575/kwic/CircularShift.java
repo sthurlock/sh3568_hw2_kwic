@@ -1,8 +1,18 @@
 package se575.kwic;
 
+import org.w3c.dom.css.CSSImportRule;
+
 import java.util.Arrays;
 
+
+
 public class CircularShift {
+
+    public String stopWords = "";
+
+    public void setStopWords(String sw) {
+        stopWords = sw;
+    }
 
     public String[] performShifts(String[] linesArray) {
         ////int nLines = inputLineStorage.numberOfLines();
@@ -50,4 +60,5 @@ public class CircularShift {
         //circularShiftLineStorage.addLines(fullList);
         return fullList;
     }
+
 }
